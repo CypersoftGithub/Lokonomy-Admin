@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, ChevronDown, Menu, LogOut, User, Settings, Search } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../../config';
 
 const breadcrumbMap = {
   '/': 'Dashboard',
@@ -22,6 +24,35 @@ export default function Header({ onToggleSidebar, sidebarCollapsed }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+
+  const userString = localStorage.getItem('lokonomy_admin_user');
+  const user = userString ? JSON.parse(userString) : { name: 'Super Admin', email: 'admin@lokonomy.com' };
+  const initials = user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'SA';
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem('lokonomy_admin_token');
+    localStorage.removeItem('lokonomy_admin_token');
+    localStorage.removeItem('lokonomy_admin_user');
+    
+    if (token) {
+      try {
+        await fetch(`${API_BASE_URL}/api/admin/logout`, {
+          method: 'POST',
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`,
+            'x-user-type': 'admin'
+          },
+          body: ''
+        });
+      } catch (err) {
+        console.error('Logout API call failed:', err);
+      }
+    }
+    
+    toast.success('Logged out successfully');
+    navigate('/login');
+  };
 
   const getPagePath = () => {
     const path = location.pathname;
@@ -74,15 +105,15 @@ export default function Header({ onToggleSidebar, sidebarCollapsed }) {
             className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center">
-              <span className="text-white font-bold text-xs">SA</span>
+              <span className="text-white font-bold text-xs">{initials}</span>
             </div>
             <ChevronDown size={14} className="text-gray-400" />
           </button>
           {showUserDropdown && (
             <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 z-50 fade-in">
               <div className="px-4 py-3 border-b border-gray-100">
-                <p className="text-sm font-semibold text-gray-800">Super Admin</p>
-                <p className="text-xs text-gray-400 mt-0.5">admin@lokonomy.com</p>
+                <p className="text-sm font-semibold text-gray-800">{user.name}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{user.email}</p>
               </div>
               <button className="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2.5 transition-colors">
                 <User size={15} className="text-gray-400" /> My Profile
@@ -92,7 +123,7 @@ export default function Header({ onToggleSidebar, sidebarCollapsed }) {
               </button>
               <div className="border-t border-gray-100 mt-1 pt-1">
                 <button
-                  onClick={() => navigate('/login')}
+                  onClick={handleLogout}
                   className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 flex items-center gap-2.5 transition-colors"
                 >
                   <LogOut size={15} /> Logout

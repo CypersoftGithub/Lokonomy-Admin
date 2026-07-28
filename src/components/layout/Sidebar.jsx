@@ -6,6 +6,8 @@ import {
   CreditCard, LogOut, ChevronRight, ChevronDown,
 } from 'lucide-react';
 import logo from '../../assets/lokonomy.svg';
+import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../../config';
 
 const navSections = [
   {
@@ -45,6 +47,35 @@ const navSections = [
 
 export default function Sidebar({ collapsed }) {
   const navigate = useNavigate();
+
+  const userString = localStorage.getItem('lokonomy_admin_user');
+  const user = userString ? JSON.parse(userString) : { name: 'Super Admin', email: 'admin@lokonomy.com' };
+  const initials = user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'SA';
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem('lokonomy_admin_token');
+    localStorage.removeItem('lokonomy_admin_token');
+    localStorage.removeItem('lokonomy_admin_user');
+    
+    if (token) {
+      try {
+        await fetch(`${API_BASE_URL}/api/admin/logout`, {
+          method: 'POST',
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`,
+            'x-user-type': 'admin'
+          },
+          body: ''
+        });
+      } catch (err) {
+        console.error('Logout API call failed:', err);
+      }
+    }
+    
+    toast.success('Logged out successfully');
+    navigate('/login');
+  };
 
   return (
     <aside
@@ -118,7 +149,7 @@ export default function Sidebar({ collapsed }) {
       <div className="border-t border-gray-100 p-3 flex-shrink-0">
         {collapsed ? (
           <button
-            onClick={() => navigate('/login')}
+            onClick={handleLogout}
             className="w-full flex items-center justify-center p-2 rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"
             title="Logout"
           >
@@ -127,14 +158,14 @@ export default function Sidebar({ collapsed }) {
         ) : (
           <div className="flex items-center gap-3 px-2 py-1.5">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-xs">SA</span>
+              <span className="text-white font-bold text-xs">{initials}</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-800 truncate">Super Admin</p>
-              <p className="text-xs text-gray-400 truncate">admin@lokonomy.com</p>
+              <p className="text-sm font-semibold text-gray-800 truncate">{user.name}</p>
+              <p className="text-xs text-gray-400 truncate">{user.email}</p>
             </div>
             <button
-              onClick={() => navigate('/login')}
+              onClick={handleLogout}
               className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"
               title="Logout"
             >

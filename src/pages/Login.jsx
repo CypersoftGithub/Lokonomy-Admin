@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, BarChart3, Building2, Users } from 'lucide-react';
 import toast from 'react-hot-toast';
 import logo from '../assets/lokonomy.svg';
+import { API_BASE_URL } from '../config';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -12,14 +13,45 @@ export default function Login() {
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      toast.error('Please enter email and password');
+      return;
+    }
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (result && result.status === true) {
+        localStorage.setItem('lokonomy_admin_token', result.data.access_token);
+        localStorage.setItem('lokonomy_admin_user', JSON.stringify({
+          id: result.data.id,
+          name: result.data.name,
+          email: result.data.email,
+        }));
+        toast.success(`Welcome back, ${result.data.name || 'Super Admin'}!`);
+        navigate('/');
+      } else {
+        const errorVal = result?.error || result?.message;
+        const errMsg = typeof errorVal === 'object' ? (errorVal.message || JSON.stringify(errorVal)) : errorVal;
+        toast.error(errMsg || 'Invalid email or password !');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Network error. Please try again.');
+    } finally {
       setLoading(false);
-      toast.success('Welcome back, Super Admin!');
-      navigate('/');
-    }, 1000);
+    }
   };
 
   return (

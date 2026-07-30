@@ -52,9 +52,10 @@ function LivePhonePreview({ title, body, imageUrl }) {
 
 export default function Notifications() {
   const [activeTab, setActiveTab] = useState('all_users');
+  const [notificationType, setNotificationType] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [actionUrl, setActionUrl] = useState('');
+  const [targetId, setTargetId] = useState('');
   const [deviceToken, setDeviceToken] = useState('');
   const [history, setHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
@@ -161,11 +162,19 @@ export default function Notifications() {
     setSending(true);
     const token = localStorage.getItem('lokonomy_admin_token');
 
+    const dataPayload = {};
+    if (notificationType) {
+      dataPayload.type = notificationType;
+    }
+    if (targetId.trim()) {
+      dataPayload.id = targetId.trim();
+    }
+
     const payload = {
       title: title.trim(),
       body: body.trim(),
       image: uploadedImageUrl || null,
-      data: actionUrl.trim() ? { url: actionUrl.trim() } : {}
+      data: dataPayload
     };
 
     if (activeTab === 'all_users') {
@@ -192,8 +201,9 @@ export default function Notifications() {
         toast.success('Notification sent successfully! 🚀');
         setTitle('');
         setBody('');
-        setActionUrl('');
+        setTargetId('');
         setDeviceToken('');
+        setNotificationType('');
         handleRemoveImage();
         fetchHistory();
       } else {
@@ -245,8 +255,8 @@ export default function Notifications() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-5 py-3 text-sm font-semibold rounded-t-lg transition-all -mb-px ${activeTab === tab.id
-                  ? 'text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50'
-                  : 'text-slate-500 hover:text-slate-700'
+                ? 'text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50'
+                : 'text-slate-500 hover:text-slate-700'
                 }`}
             >
               {tab.label}
@@ -348,13 +358,31 @@ export default function Notifications() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Action URL / Link (Optional)</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Notification Type (Optional)</label>
+              <select
+                value={notificationType}
+                onChange={e => setNotificationType(e.target.value)}
+                className="input-field cursor-pointer font-medium text-slate-800"
+              >
+                <option value="">Select Type</option>
+                <option value="feed">feed</option>
+                <option value="business">business</option>
+                <option value="story">story</option>
+                <option value="market-sell">market-sell</option>
+                <option value="market-demand">market-demand</option>
+                <option value="job-opening">job-opening</option>
+                <option value="resume">resume</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Target ID (Optional)</label>
               <input
-                type="url"
-                value={actionUrl}
-                onChange={e => setActionUrl(e.target.value)}
-                placeholder="https://..."
-                className="input-field"
+                type="text"
+                value={targetId}
+                onChange={e => setTargetId(e.target.value)}
+                placeholder="Enter target ID (e.g. dafkbu21gi321328)..."
+                className="input-field font-mono text-xs"
               />
             </div>
 
@@ -405,6 +433,7 @@ export default function Notifications() {
                 <tr className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                   <th className="px-5 py-3">Date</th>
                   <th className="px-5 py-3">Title & Body</th>
+                  <th className="px-5 py-3">Type</th>
                   <th className="px-5 py-3">Target Audience</th>
                   <th className="px-5 py-3">Status</th>
                 </tr>
@@ -418,12 +447,19 @@ export default function Notifications() {
                       ? 'All Users (all_user)'
                       : row.user_id ? `User #${row.user_id}` : 'Broadcast';
 
+                  const typeLabel = (typeof row.data === 'object' && row.data?.type) ? row.data.type : (row.type || 'feed');
+
                   return (
                     <tr key={row.id || row.created_at} className="hover:bg-slate-50 transition-colors">
                       <td className="px-5 py-3.5 whitespace-nowrap text-slate-500">{dateStr}</td>
                       <td className="px-5 py-3.5 max-w-xs">
                         <p className="font-bold text-slate-800 truncate">{row.title}</p>
                         <p className="text-slate-500 truncate mt-0.5">{row.body}</p>
+                      </td>
+                      <td className="px-5 py-3.5 font-medium">
+                        <span className="px-2 py-0.5 rounded-md font-mono text-[11px] bg-slate-100 text-slate-700 border border-slate-200">
+                          {typeLabel}
+                        </span>
                       </td>
                       <td className="px-5 py-3.5 font-medium text-slate-600">{targetLabel}</td>
                       <td className="px-5 py-3.5">

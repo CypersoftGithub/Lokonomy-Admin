@@ -10,6 +10,7 @@ const breadcrumbMap = {
   '/users': 'App Users',
   '/partners': 'Partner Management',
   '/categories': 'Category Management',
+  '/cash-collection': 'Cash Collection',
   '/feed': 'Feed Posts',
   '/market': 'Market Listings',
   '/jobs': 'Job Postings',

@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Building2, Users, UserCheck, Tag, Rss,
   ShoppingBag, Briefcase, FileText, BookOpen, Bell, Image,
-  CreditCard, LogOut, ChevronRight, ChevronDown,
+  CreditCard, LogOut, ChevronRight, ChevronDown, Banknote,
 } from 'lucide-react';
 import logo from '../../assets/lokonomy.svg';
 import toast from 'react-hot-toast';
@@ -23,6 +23,7 @@ const navSections = [
       { path: '/users', label: 'App Users', icon: Users },
       { path: '/partners', label: 'Partners', icon: UserCheck },
       { path: '/categories', label: 'Categories', icon: Tag },
+      { path: '/cash-collection', label: 'Cash Collection', icon: Banknote },
     ],
   },
   {

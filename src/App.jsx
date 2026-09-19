@@ -8,6 +8,7 @@ import BusinessDetail from './pages/Business/BusinessDetail';
 import Users from './pages/Users';
 import Partners from './pages/Partners';
 import Categories from './pages/Categories';
+import CashCollection from './pages/CashCollection';
 import Feed from './pages/Feed';
 import Market from './pages/Market';
 import Jobs from './pages/Jobs';
@@ -42,6 +43,7 @@ export default function App() {
               <Route path="users" element={<Users />} />
               <Route path="partners" element={<Partners />} />
               <Route path="categories" element={<Categories />} />
+              <Route path="cash-collection" element={<CashCollection />} />
               <Route path="feed" element={<Feed />} />
               <Route path="market" element={<Market />} />
               <Route path="jobs" element={<Jobs />} />

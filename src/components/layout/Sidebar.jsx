@@ -21,7 +21,6 @@ const navSections = [
     items: [
       { path: '/business', label: 'Business', icon: Building2 },
       { path: '/users', label: 'App Users', icon: Users },
-      { path: '/partners', label: 'Partners', icon: UserCheck },
       { path: '/categories', label: 'Categories', icon: Tag },
       { path: '/cash-collection', label: 'Cash Collection', icon: Banknote },
     ],
@@ -57,7 +56,7 @@ export default function Sidebar({ collapsed }) {
     const token = localStorage.getItem('lokonomy_admin_token');
     localStorage.removeItem('lokonomy_admin_token');
     localStorage.removeItem('lokonomy_admin_user');
-    
+
     if (token) {
       try {
         await fetch(`${API_BASE_URL}/api/admin/logout`, {
@@ -73,16 +72,15 @@ export default function Sidebar({ collapsed }) {
         console.error('Logout API call failed:', err);
       }
     }
-    
+
     toast.success('Logged out successfully');
     navigate('/login');
   };
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-full flex flex-col transition-all duration-300 z-30 bg-white border-r border-gray-100 ${
-        collapsed ? 'w-[68px]' : 'w-[260px]'
-      }`}
+      className={`fixed left-0 top-0 h-full flex flex-col transition-all duration-300 z-30 bg-white border-r border-gray-100 ${collapsed ? 'w-[68px]' : 'w-[260px]'
+        }`}
     >
       {/* Logo */}
       <div className="flex items-center h-16 border-b border-gray-100 px-4 flex-shrink-0">
@@ -111,12 +109,10 @@ export default function Sidebar({ collapsed }) {
                 to={path}
                 end={path === '/'}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg text-[13px] font-medium mb-0.5 transition-all duration-200 group ${
-                    collapsed ? 'justify-center mx-2 px-2 py-2.5' : 'mx-3 px-3 py-2'
-                  } ${
-                    isActive
-                      ? 'bg-primary-light text-primary font-semibold'
-                      : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
+                  `flex items-center gap-3 rounded-lg text-[13px] font-medium mb-0.5 transition-all duration-200 group ${collapsed ? 'justify-center mx-2 px-2 py-2.5' : 'mx-3 px-3 py-2'
+                  } ${isActive
+                    ? 'bg-primary-light text-primary font-semibold'
+                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
                   }`
                 }
                 title={collapsed ? label : undefined}
@@ -132,9 +128,8 @@ export default function Sidebar({ collapsed }) {
                         <span className="truncate flex-1">{label}</span>
                         <ChevronRight
                           size={14}
-                          className={`flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity ${
-                            isActive ? 'opacity-100 text-primary' : 'text-gray-300'
-                          }`}
+                          className={`flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity ${isActive ? 'opacity-100 text-primary' : 'text-gray-300'
+                            }`}
                         />
                       </>
                     )}

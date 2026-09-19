@@ -31,7 +31,7 @@ export default function Stories() {
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -431,37 +431,41 @@ export default function Stories() {
           No stories found for the selected tab.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 w-full">
           {paginatedStories.map((story, i) => (
-            <div key={story.id} className="card overflow-hidden hover:shadow-md transition-all duration-200 group w-full max-w-[360px] bg-white">
-              <div className="h-32 w-full relative flex items-center justify-center overflow-hidden bg-slate-50 flex-shrink-0">
-                {story.image ? (
-                  <img src={story.image} alt={story.title} className="w-full h-full object-cover absolute inset-0" />
-                ) : (
-                  <div className={`w-full h-full bg-gradient-to-br ${storyColors[i % storyColors.length]} absolute inset-0`} />
-                )}
-                <span className="text-white text-opacity-30 text-5xl relative z-10">📰</span>
-                <div className="absolute top-3 left-3 z-10">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-black/30 text-white backdrop-blur-sm">
-                    {story.type}
-                  </span>
+            <div key={story.id} className="card overflow-hidden hover:shadow-md transition-all duration-200 group w-full bg-white flex flex-col justify-between">
+              <div>
+                <div className="h-32 w-full relative flex items-center justify-center overflow-hidden bg-slate-50 flex-shrink-0">
+                  {story.image ? (
+                    <img src={story.image} alt={story.title} className="w-full h-full object-cover absolute inset-0" />
+                  ) : (
+                    <div className={`w-full h-full bg-gradient-to-br ${storyColors[i % storyColors.length]} absolute inset-0`} />
+                  )}
+                  <span className="text-white text-opacity-30 text-5xl relative z-10">📰</span>
+                  <div className="absolute top-3 left-3 z-10">
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-black/30 text-white backdrop-blur-sm">
+                      {story.type}
+                    </span>
+                  </div>
+                  <div className="absolute top-3 right-3 z-10">
+                    <StatusBadge status={story.status} />
+                  </div>
                 </div>
-                <div className="absolute top-3 right-3 z-10">
-                  <StatusBadge status={story.status} />
+                <div className="p-4 pb-2">
+                  <h4 className="font-bold text-slate-800 mb-2 line-clamp-1" title={story.title}>{story.title}</h4>
+                  <div className="space-y-1 mb-3">
+                    <p className="text-xs text-slate-500 flex items-center gap-1 truncate">
+                      📍 {story.city}
+                    </p>
+                    <p className="text-xs text-slate-500">Posted: {story.posted}</p>
+                    <p className={`text-xs ${story.expiry ? 'text-amber-600' : 'text-slate-400'}`}>
+                      {story.expiry ? `Expires ${story.expiry}` : 'No Expiry'}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="p-4">
-                <h4 className="font-bold text-slate-800 mb-2">{story.title}</h4>
-                <div className="space-y-1 mb-3">
-                  <p className="text-xs text-slate-500 flex items-center gap-1">
-                    📍 {story.city}
-                  </p>
-                  <p className="text-xs text-slate-500">Posted: {story.posted}</p>
-                  <p className={`text-xs ${story.expiry ? 'text-amber-600' : 'text-slate-400'}`}>
-                    {story.expiry ? `Expires ${story.expiry}` : 'No Expiry'}
-                  </p>
-                </div>
-                <div className="flex items-center justify-between">
+              <div className="px-4 pb-4 pt-0">
+                <div className="flex items-center justify-between border-t border-slate-50 pt-3">
                   <span className="text-xs text-slate-500 flex items-center gap-1">
                     <Eye size={11} /> {story.views.toLocaleString()} likes
                   </span>
@@ -507,8 +511,9 @@ export default function Stories() {
               }}
               className="border border-slate-200 rounded-lg px-2.5 py-1 text-sm bg-white text-slate-700 outline-none focus:border-indigo-500 transition-colors cursor-pointer"
             >
-              <option value={6}>6</option>
+              <option value={8}>8</option>
               <option value={12}>12</option>
+              <option value={16}>16</option>
               <option value={24}>24</option>
               <option value={48}>48</option>
             </select>

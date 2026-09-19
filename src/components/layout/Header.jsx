@@ -8,7 +8,6 @@ const breadcrumbMap = {
   '/': 'Dashboard',
   '/business': 'Business Management',
   '/users': 'App Users',
-  '/partners': 'Partner Management',
   '/categories': 'Category Management',
   '/cash-collection': 'Cash Collection',
   '/feed': 'Feed Posts',
@@ -34,7 +33,7 @@ export default function Header({ onToggleSidebar, sidebarCollapsed }) {
     const token = localStorage.getItem('lokonomy_admin_token');
     localStorage.removeItem('lokonomy_admin_token');
     localStorage.removeItem('lokonomy_admin_user');
-    
+
     if (token) {
       try {
         await fetch(`${API_BASE_URL}/api/admin/logout`, {
@@ -50,7 +49,7 @@ export default function Header({ onToggleSidebar, sidebarCollapsed }) {
         console.error('Logout API call failed:', err);
       }
     }
-    
+
     toast.success('Logged out successfully');
     navigate('/login');
   };

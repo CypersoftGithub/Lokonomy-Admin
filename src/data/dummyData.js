@@ -40,14 +40,6 @@ export const users = [
   { id: '#U012', name: 'Geeta Mehta', phone: '9767534120', city: 'Aurangabad', joined: '5 Nov 2024', lastActive: '26 Dec 2024', status: 'Active' },
 ];
 
-export const partners = [
-  { id: '#P001', name: 'Raj Kumar', email: 'raj@email.com', phone: '9876543210', city: 'Mumbai', taluka: 'Andheri', role: 'Partner', status: 'Active', lastLogin: '2 Jan 2025' },
-  { id: '#P002', name: 'Sunita Mehta', email: 'sunita@email.com', phone: '9123456789', city: 'Pune', taluka: 'Hadapsar', role: 'Partner', status: 'Active', lastLogin: '1 Jan 2025' },
-  { id: '#P003', name: 'Anil Sharma', email: 'anil@email.com', phone: '9988776655', city: 'Nashik', taluka: 'Deolali', role: 'Partner', status: 'Inactive', lastLogin: '20 Dec 2024' },
-  { id: '#P004', name: 'Pooja Patil', email: 'pooja@email.com', phone: '9765432108', city: 'Mumbai', taluka: 'Borivali', role: 'Partner', status: 'Active', lastLogin: '3 Jan 2025' },
-  { id: '#P005', name: 'Kiran Yadav', email: 'kiran@email.com', phone: '9834512678', city: 'Aurangabad', taluka: 'MIDC', role: 'Partner', status: 'Active', lastLogin: '2 Jan 2025' },
-];
-
 export const categories = [
   {
     id: 'CAT_001', name: 'Electronics', subcategoryCount: 12, businessCount: 456,

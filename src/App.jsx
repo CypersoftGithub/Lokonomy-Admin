@@ -16,6 +16,7 @@ import Stories from './pages/Stories';
 import Notifications from './pages/Notifications';
 import Banners from './pages/Banners';
 import Plans from './pages/Plans';
+import StorageManager from './pages/StorageManager';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 
@@ -50,6 +51,7 @@ export default function App() {
               <Route path="notifications" element={<Notifications />} />
               <Route path="banners" element={<Banners />} />
               <Route path="plans" element={<Plans />} />
+              <Route path="storage" element={<StorageManager />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://api.lokonomy.in',
+        target: process.env.VITE_DEV_BACKEND_URL,
         changeOrigin: true,
         secure: false,
       }

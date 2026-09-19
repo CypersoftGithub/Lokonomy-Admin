@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, Users, Building2, Send, Upload } from 'lucide-react';
+import { Bell, Users, Building2, Send, Upload, BellRing, Calendar, Radio } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from '../config';
 
@@ -233,18 +233,83 @@ export default function Notifications() {
         <p className="text-slate-500 text-sm mt-0.5">Send push notifications to app users and businesses</p>
       </div>
 
-      {/* Stats Bar */}
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: 'Total Recorded', value: totalSent.toLocaleString(), bg: 'bg-indigo-50 border border-indigo-100', color: 'text-indigo-700' },
-          { label: 'Sent This Week', value: thisWeekCount.toLocaleString(), bg: 'bg-emerald-50 border border-emerald-100', color: 'text-emerald-700' },
-          { label: 'System Health', value: 'Active', bg: 'bg-purple-50 border border-purple-100', color: 'text-purple-700' },
-        ].map(({ label, value, bg, color }) => (
-          <div key={label} className={`${bg} rounded-2xl p-4 shadow-sm`}>
-            <p className={`text-2xl font-bold ${color}`}>{value}</p>
-            <p className="text-xs font-medium text-slate-600 mt-1">{label}</p>
+      {/* Stats Bar - High Aesthetic Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Card 1: Total Recorded Notifications */}
+        <div className="bg-gradient-to-br from-orange-900/5 via-white to-orange-50/40 border border-orange-100/80 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-orange-500/10 rounded-full blur-xl group-hover:bg-orange-500/20 transition-all" />
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-100">
+                  Total Sent
+                </span>
+                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">
+                {totalSent ? totalSent.toLocaleString() : '0'}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Push notification history logs
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-orange-600 to-yellow-600 text-white shadow-lg shadow-orange-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <BellRing size={22} />
+            </div>
           </div>
-        ))}
+        </div>
+
+        {/* Card 2: Sent This Week */}
+        <div className="bg-gradient-to-br from-emerald-900/5 via-white to-emerald-50/40 border border-emerald-100/80 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all" />
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+                  Past 7 Days
+                </span>
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">
+                {thisWeekCount ? thisWeekCount.toLocaleString() : '0'}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Recent broadcast activity
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Calendar size={22} />
+            </div>
+          </div>
+        </div>
+
+        {/* Card 3: FCM Gateway Status */}
+        <div className="bg-gradient-to-br from-purple-900/5 via-white to-purple-50/40 border border-purple-100/80 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-purple-500/10 rounded-full blur-xl group-hover:bg-purple-500/20 transition-all" />
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">
+                  FCM Gateway
+                </span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              </div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-3xl font-black text-slate-900 tracking-tight">
+                  Active
+                </h3>
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  Online
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 font-medium">
+                Firebase Cloud Messaging ready
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Radio size={22} />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Audience Tabs */}

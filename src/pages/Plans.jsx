@@ -1,14 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { Pencil, Check, X } from 'lucide-react';
-import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
-} from 'recharts';
-import { revenueByPlanData } from '../data/dummyData';
+import { Pencil, Check, X, Zap, Crown, Award, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from '../config';
 
-const planIcons = { 1: '🟢', 3: '🟣', 4: '🏆' };
-const planBarColors = { Basic: '#3abe40ff', Standard: '#8B5CF6', Premium: '#F59E0B' };
+const planConfigs = [
+  {
+    badgeText: 'Starter Plan',
+    badgeClass: 'text-emerald-700 bg-emerald-50 border-emerald-100',
+    pulseClass: 'bg-emerald-500',
+    cardBg: 'bg-gradient-to-br from-emerald-900/5 via-white to-emerald-50/40 border border-emerald-100/80 hover:shadow-emerald-500/10',
+    glowBg: 'bg-emerald-500/10 group-hover:bg-emerald-500/20',
+    iconGradient: 'from-emerald-500 to-teal-600',
+    iconShadow: 'shadow-emerald-500/30',
+    checkColor: 'text-emerald-600',
+    icon: <Zap size={22} />,
+    isPopular: false,
+    validityDesc: '1 Month platform validity',
+    highlights: ['1 Feed Post / Month', 'Business Directory Listing', 'Standard Member Access']
+  },
+  {
+    badgeText: 'Growth Plan',
+    badgeClass: 'text-purple-700 bg-purple-50 border-purple-100',
+    pulseClass: 'bg-purple-500',
+    cardBg: 'bg-gradient-to-br from-purple-900/5 via-white to-purple-50/40 border border-purple-200/90 hover:shadow-purple-500/15 ring-1 ring-purple-400/20',
+    glowBg: 'bg-purple-500/10 group-hover:bg-purple-500/20',
+    iconGradient: 'from-purple-600 to-indigo-600',
+    iconShadow: 'shadow-purple-500/30',
+    checkColor: 'text-purple-600',
+    icon: <Crown size={22} />,
+    isPopular: true,
+    validityDesc: '12 Months (1 Year) platform validity',
+    highlights: ['5 Feed Posts / Month', '2 Job Openings / Month', '1 Month Search Priority']
+  },
+  {
+    badgeText: 'Enterprise Value',
+    badgeClass: 'text-amber-700 bg-amber-50 border-amber-100',
+    pulseClass: 'bg-amber-500',
+    cardBg: 'bg-gradient-to-br from-amber-900/5 via-white to-amber-50/40 border border-amber-100/80 hover:shadow-amber-500/10',
+    glowBg: 'bg-amber-500/10 group-hover:bg-amber-500/20',
+    iconGradient: 'from-amber-500 to-orange-600',
+    iconShadow: 'shadow-amber-500/30',
+    checkColor: 'text-amber-600',
+    icon: <Award size={22} />,
+    isPopular: false,
+    validityDesc: '36 Months (3 Years) maximum validity',
+    highlights: ['6 Feed Posts / Month', '2 Jobs + Sell/Demand Posts', '12 Months Search Priority']
+  }
+];
 
 function FeatureCell({ value }) {
   if (typeof value === 'boolean') {
@@ -32,8 +70,6 @@ export default function Plans() {
         const resJson = await response.json();
         if (resJson.status) {
           const colors = ['#3abe40ff', '#8B5CF6', '#F59E0B'];
-          const bgColors = ['#EFF6FF', '#F5F3FF', '#FFFBEB'];
-          const icons = ['🟢', '🟣', '🏆'];
           const names = ['Basic Plan', 'Standard Plan', 'Premium Plan'];
 
           const mapped = resJson.data.map((plan, index) => {
@@ -44,11 +80,7 @@ export default function Plans() {
               price: `₹${plan.amount}/${validityText}`,
               amount: plan.amount,
               validity: plan.validity,
-              businesses: index === 0 ? 1456 : (index === 1 ? 972 : 486),
-              revenue: index === 0 ? '₹7,27,544' : (index === 1 ? '₹14,56,228' : '₹14,57,514'),
               color: colors[index] || '#1E293B',
-              bgColor: bgColors[index] || '#F8FAFC',
-              icon: icons[index] || '⭐',
               raw: plan
             };
           });
@@ -86,45 +118,81 @@ export default function Plans() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-800">Subscription Plans</h1>
-        <p className="text-slate-500 text-sm mt-0.5">Manage plan pricing, features and revenue</p>
+        <p className="text-slate-500 text-sm mt-0.5">Manage plan pricing, features and business offerings</p>
       </div>
 
-      {/* Plan cards */}
-      <div className={`grid gap-5 ${plansList.length === 3 ? 'grid-cols-3' : 'grid-cols-4'}`}>
-        {plansList.map((plan) => (
-          <div
-            key={plan.id}
-            className="card p-5 hover:shadow-md transition-all duration-200 relative overflow-hidden"
-            style={{ borderTop: `4px solid ${plan.color}` }}
-          >
-            <div className="text-3xl mb-3">{plan.icon}</div>
-            <h3 className="font-bold text-slate-800 text-lg mb-1">{plan.name}</h3>
-            <p className="text-2xl font-bold mb-1" style={{ color: plan.color }}>{plan.price}</p>
-            <div className="space-y-1 mb-4">
-              <p className="text-sm text-slate-500">
-                <span className="font-semibold text-slate-700">{plan.businesses.toLocaleString()}</span> Businesses
-              </p>
-              <p className="text-sm text-slate-500">
-                Revenue: <span className="font-semibold text-slate-700">{plan.revenue}</span>
-              </p>
-            </div>
-            <button
-              onClick={() => toast.success(`Edit ${plan.name} form opened!`)}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all hover:opacity-80"
-              style={{ borderColor: plan.color, color: plan.color }}
-            >
-              <Pencil size={14} /> Edit Plan
-            </button>
-            {/* Background decoration */}
+      {/* Plan Cards - High Aesthetic Modern Gradient Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {plansList.map((plan, index) => {
+          const config = planConfigs[index] || planConfigs[0];
+          const validityLabel = plan.validity === '1' ? 'month' : (plan.validity === '12' ? 'year' : `${plan.validity} months`);
+
+          return (
             <div
-              className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-10"
-              style={{ background: plan.color }}
-            />
-          </div>
-        ))}
+              key={plan.id}
+              className={`${config.cardBg} rounded-2xl p-5 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between`}
+            >
+              {/* Radial glow background effect */}
+              <div className={`absolute -right-6 -bottom-6 w-28 h-28 ${config.glowBg} rounded-full blur-xl transition-all`} />
+
+              <div>
+                {/* Header: Badge & 3D Glowing Icon */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${config.badgeClass}`}>
+                        {config.badgeText}
+                      </span>
+                      {config.isPopular ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700 border border-purple-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
+                          Popular
+                        </span>
+                      ) : (
+                        <span className={`w-2 h-2 rounded-full ${config.pulseClass} animate-pulse`} />
+                      )}
+                    </div>
+                    <h3 className="text-xl font-black text-slate-900 tracking-tight mt-1">
+                      {plan.name}
+                    </h3>
+                  </div>
+
+                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${config.iconGradient} text-white shadow-lg ${config.iconShadow} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                    {config.icon}
+                  </div>
+                </div>
+
+                {/* Pricing section */}
+                <div className="mt-4 pt-3 border-t border-slate-100/80">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-3xl font-black text-slate-900 tracking-tight">
+                      ₹{Number(plan.amount).toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-400">
+                      / {validityLabel}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-medium mt-1">
+                    {config.validityDesc}
+                  </p>
+                </div>
+
+                {/* Key Quick Feature Highlights */}
+                <div className="mt-4 pt-3 border-t border-slate-100/60 space-y-2">
+                  {config.highlights.map((h, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-xs text-slate-600">
+                      <CheckCircle2 size={14} className={`${config.checkColor} flex-shrink-0`} />
+                      <span>{h}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Feature comparison table */}
@@ -136,15 +204,18 @@ export default function Plans() {
           <table className="w-full">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/3">Feature</th>
-                {plansList.map(plan => (
-                  <th key={plan.id} className="px-5 py-3 text-center">
-                    <div className="flex flex-col items-center gap-1">
-                      <span className="text-lg">{plan.icon}</span>
-                      <span className="text-xs font-bold" style={{ color: plan.color }}>{plan.name.replace(' Plan', '')}</span>
-                    </div>
-                  </th>
-                ))}
+                <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider w-1/3">Feature</th>
+                {plansList.map((plan, index) => {
+                  const config = planConfigs[index] || planConfigs[0];
+                  return (
+                    <th key={plan.id} className="px-5 py-3.5 text-center">
+                      <div className="flex items-center justify-center gap-1.5">
+                        <span className={`w-2 h-2 rounded-full ${config.pulseClass}`} />
+                        <span className="text-xs font-bold text-slate-800">{plan.name}</span>
+                      </div>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
@@ -161,28 +232,6 @@ export default function Plans() {
             </tbody>
           </table>
         </div>
-      </div>
-
-      {/* Revenue by plan chart */}
-      <div className="card p-6">
-        <div className="mb-5">
-          <h3 className="font-bold text-slate-800">Revenue by Plan</h3>
-          <p className="text-xs text-slate-400 mt-0.5">Monthly revenue breakdown per plan type</p>
-        </div>
-        <ResponsiveContainer width="100%" height={280}>
-          <BarChart data={revenueByPlanData} barSize={18} barGap={4}>
-            <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={v => `₹${v / 1000}K`} />
-            <Tooltip
-              formatter={(v, name) => [`₹${v.toLocaleString('en-IN')}`, name]}
-              contentStyle={{ borderRadius: '10px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
-            />
-            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 16 }} />
-            <Bar dataKey="Basic" fill={planBarColors.Basic} radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Standard" fill={planBarColors.Standard} radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Premium" fill={planBarColors.Premium} radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
       </div>
     </div>
   );

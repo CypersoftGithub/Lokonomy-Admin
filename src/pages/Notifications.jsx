@@ -110,10 +110,11 @@ export default function Notifications() {
     setUploadingImage(true);
     const token = localStorage.getItem('lokonomy_admin_token');
     const formData = new FormData();
+    formData.append('folder', 'Notification Image');
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/storage/upload`, {
+      const response = await fetch(`${API_BASE_URL}/api/storage/upload?folder=${encodeURIComponent('Notification Image')}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

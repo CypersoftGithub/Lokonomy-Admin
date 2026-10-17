@@ -364,45 +364,101 @@ export default function CashCollection() {
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="card p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0">
-            <Building2 size={24} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Businesses</p>
-            <h3 className="text-2xl font-bold text-slate-800 mt-0.5">{stats.total}</h3>
-          </div>
-        </div>
-
-        <div className="card p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
-            <Clock size={24} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending Collections</p>
-            <h3 className="text-2xl font-bold text-slate-800 mt-0.5">{stats.pending}</h3>
-          </div>
-        </div>
-
-        <div className="card p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
-            <CheckCircle2 size={24} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Collected Payments</p>
-            <h3 className="text-2xl font-bold text-slate-800 mt-0.5">{stats.collected}</h3>
+      {/* Summary Cards - High Aesthetic Modern Gradient Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Card 1: Total Businesses */}
+        <div className="bg-gradient-to-br from-indigo-900/5 via-white to-indigo-50/40 border border-indigo-100/80 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl group-hover:bg-indigo-500/20 transition-all" />
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">
+                  Total Businesses
+                </span>
+                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">
+                {stats.total.toLocaleString()}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Registered business accounts
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Building2 size={22} />
+            </div>
           </div>
         </div>
 
-        <div className="card p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
-            <Sparkles size={24} />
+        {/* Card 2: Pending Collections */}
+        <div className="bg-gradient-to-br from-rose-900/5 via-white to-rose-50/40 border border-rose-100/80 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-rose-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-rose-500/10 rounded-full blur-xl group-hover:bg-rose-500/20 transition-all" />
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-100">
+                  Pending Cash
+                </span>
+                <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">
+                {stats.pending.toLocaleString()}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Awaiting cash collection
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-red-600 text-white shadow-lg shadow-rose-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Clock size={22} />
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Upgraded Plans</p>
-            <h3 className="text-2xl font-bold text-slate-800 mt-0.5">{stats.upgraded}</h3>
+        </div>
+
+        {/* Card 3: Collected Payments */}
+        <div className="bg-gradient-to-br from-emerald-900/5 via-white to-emerald-50/40 border border-emerald-100/80 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all" />
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+                  Collected
+                </span>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">
+                {stats.collected.toLocaleString()}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Verified payment received
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <CheckCircle2 size={22} />
+            </div>
+          </div>
+        </div>
+
+        {/* Card 4: Upgraded Plans */}
+        <div className="bg-gradient-to-br from-purple-900/5 via-white to-purple-50/40 border border-purple-100/80 rounded-2xl p-5 shadow-xs hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-purple-500/10 rounded-full blur-xl group-hover:bg-purple-500/20 transition-all" />
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">
+                  Upgraded Plans
+                </span>
+                <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
+              </div>
+              <h3 className="text-3xl font-black text-slate-900 tracking-tight">
+                {stats.upgraded.toLocaleString()}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                Higher tier active subscriptions
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/30 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <Sparkles size={22} />
+            </div>
           </div>
         </div>
       </div>

@@ -74,10 +74,11 @@ export default function Banners() {
     setUploadingImage(true);
     const token = localStorage.getItem('lokonomy_admin_token');
     const formData = new FormData();
+    formData.append('folder', 'Banner');
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/storage/upload`, {
+      const response = await fetch(`${API_BASE_URL}/api/storage/upload?folder=Banner`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
